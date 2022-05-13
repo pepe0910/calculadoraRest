@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
 
-@RestController
-@RequestMapping("/api/v1")
 public interface calculadoraApi {
 
     @GetMapping(value = "/calcula")
