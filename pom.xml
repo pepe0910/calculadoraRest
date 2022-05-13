@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>spring-boot</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot</name>
-	<description>Demo project for Spring Boot</description>
+	<artifactId>calculadora</artifactId>
+	<version>0.0.1</version>
+	<name>calculadora</name>
+	<description>Calculadora project for Spring Boot</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -36,18 +36,52 @@
 		<dependency>
 			<groupId>com.example</groupId>
 			<artifactId>tracer</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/tracer-1.0.0.jar</systemPath>
+			<version>1.0.0</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
+		<finalName>calculadora</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<groupId>com.example</groupId>
+					<artifactId>tracer</artifactId>
+					<version>1.0.0</version>
+					<packaging>jar</packaging>
+					<file>${basedir}/lib/tracer-1.0.0.jar</file>
+					<generatePom>true</generatePom>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install-jar-lib</id>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<phase>validate</phase>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.1.6.RELEASE</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>spring-boot</classifier>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 
