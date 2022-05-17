@@ -1,20 +1,32 @@
 package com.example.springboot.service.impl;
 
+import com.example.springboot.model.OperacionEnum;
+import com.example.springboot.service.MathOperation;
 import com.example.springboot.service.OperationsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 @Service
 public class OperationsServiceImpl implements OperationsService {
 
-    @Override
-    public BigInteger suma(BigInteger numA, BigInteger numB) {
-        return numA.add(numB);
-    }
+    @Autowired
+    MathOperation mathOperation;
 
     @Override
-    public BigInteger resta(BigInteger numA, BigInteger numB) {
-        return numA.subtract(numB);
+    public BigDecimal realizaOperacion(BigDecimal operadorA, BigDecimal operadorB, String operacion) {
+        BigDecimal    resultado     = null;
+        OperacionEnum operacionEnum = OperacionEnum.valor(operacion);
+
+        if (OperacionEnum.SUMA.equals(operacionEnum)) {
+            resultado = mathOperation.suma(operadorA, operadorB);
+        } else if (OperacionEnum.RESTA.equals(operacionEnum)) {
+            resultado = mathOperation.resta(operadorA, operadorB);
+        }
+
+        return resultado;
     }
+
+
 }

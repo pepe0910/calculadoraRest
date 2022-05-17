@@ -12,13 +12,10 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"let operador1 = pm.variables.replaceIn(\"{{$randomInt}}\")\r",
-							"console.info(\"operador1 : \" +operador1);\r",
-							"pm.collectionVariables.set(\"operador1\", operador1);\r",
 							"\r",
-							"let operador2 = pm.variables.replaceIn(\"{{$randomInt}}\")\r",
-							"console.info(\"operador2 : \" +operador2);\r",
-							"pm.collectionVariables.set(\"operador2\", operador2);"
+							"pm.collectionVariables.set(\"operador1\", 85415);\r",
+							"\r",
+							"pm.collectionVariables.set(\"operador2\", 50);"
 						],
 						"type": "text/javascript"
 					}
@@ -31,21 +28,15 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"\r",
 							"pm.test(\"Result is correct\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
 							"\r",
-							"    let operador1 = pm.collectionVariables.get(\"operador1\");\r",
-							"    let operador2 = pm.collectionVariables.get(\"operador2\");\r",
-							"\r",
-							"    console.info(\"operador1 + operador2 : \" + (operador1 + operador2));\r",
 							"\r",
 							"    var jsonData = pm.response.json();\r",
+							"\t    pm.expect(jsonData).to.eql(85465);\r",
 							"\r",
 							"    console.info(\"jsonData : \" +jsonData);\r",
 							"\r",
 							"});\r",
-							"\r",
 							"\r",
 							""
 						],
@@ -57,7 +48,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/calcula?operador1={{operador1}}&operador2={{operador2}}&operacion=suma",
+					"raw": "http://localhost:8080/api/v1/calcula?operador1=85415&operador2=50&operacion=suma",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -71,11 +62,11 @@
 					"query": [
 						{
 							"key": "operador1",
-							"value": "{{operador1}}"
+							"value": "85415"
 						},
 						{
 							"key": "operador2",
-							"value": "{{operador2}}"
+							"value": "50"
 						},
 						{
 							"key": "operacion",
@@ -150,6 +141,78 @@
 						{
 							"key": "operacion",
 							"value": "resta"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test error",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.collectionVariables.set(\"operador1\", 85415);\r",
+							"\r",
+							"pm.collectionVariables.set(\"operador2\", 50);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Result is correct\", function () {\r",
+							"\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\t    pm.expect(jsonData).to.eql(85465);\r",
+							"\r",
+							"    console.info(\"jsonData : \" +jsonData);\r",
+							"\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/calcula?operador1=85415&operador2=50&operacion=suma",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"calcula"
+					],
+					"query": [
+						{
+							"key": "operador1",
+							"value": "85415"
+						},
+						{
+							"key": "operador2",
+							"value": "50"
+						},
+						{
+							"key": "operacion",
+							"value": "suma"
 						}
 					]
 				}

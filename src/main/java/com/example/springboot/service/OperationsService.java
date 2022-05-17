@@ -1,14 +1,10 @@
 package com.example.springboot.service;
 
-import org.springframework.stereotype.Service;
-
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 
 public interface OperationsService {
 
-    BigInteger suma(BigInteger numA, BigInteger numB);
-
-    BigInteger resta(BigInteger numA, BigInteger numB);
+    BigDecimal realizaOperacion(BigDecimal numA, BigDecimal numB, String operacion);
 
 }

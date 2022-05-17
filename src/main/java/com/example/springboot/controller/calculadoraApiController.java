@@ -1,39 +1,44 @@
 package com.example.springboot.controller;
 
-import com.example.springboot.model.OperacionEnum;
 import com.example.springboot.service.OperationsService;
-import io.corp.calculator.TracerImpl;
+import com.example.springboot.util.Tracer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/v1")
 public class calculadoraApiController implements calculadoraApi {
 
     @Autowired
-    OperationsService operationsService;
+    private OperationsService operationsService;
 
-    private TracerImpl tracer = new TracerImpl();
+    @Autowired
+    private Tracer tracer;
 
     @Override
-    public ResponseEntity<BigInteger> calcular(BigInteger primerNumero, BigInteger segundoNumero, String operacion) {
+    public ResponseEntity<BigDecimal> calcular(BigDecimal primerNumero, BigDecimal segundoNumero, String operacion) {
 
-        BigInteger    resultado     = null;
-        OperacionEnum operacionEnum = OperacionEnum.valor(operacion);
-
-
-        if (OperacionEnum.SUMA.equals(operacionEnum)) {
-            resultado = operationsService.suma(primerNumero, segundoNumero);
-        } else if (OperacionEnum.RESTA.equals(operacionEnum)) {
-            resultado = operationsService.resta(primerNumero, segundoNumero);
+        BigDecimal resultado = null;
+        try {
+            resultado = operationsService.realizaOperacion(primerNumero, segundoNumero, operacion);
+            tracer.trace(primerNumero + " " + operacion + " " + segundoNumero + " = " + resultado);
+        } catch (Exception ex) {
+            tracer.trace(ex.getMessage());
+            throw ex;
         }
-        tracer.trace(resultado);
-
         return new ResponseEntity<>(resultado, HttpStatus.OK);
+
+    }
+
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<String> handleException(Exception ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
